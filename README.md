@@ -105,7 +105,7 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
 
 ## Examples
 
-## 1. add 
+## 1. **add** 
 **Example:** `add $t0, $t1, $t2`  
 - **Action:** Adds the values in `$t1` and `$t2`, stores the result in `$t0`.  
 - **Binary:** `000000 01001 01010 01000 00000 100000`  
