@@ -81,18 +81,118 @@ Used for unconditional jumps.
 
 ## Instruction Categories
 
-### 1. Arithmetic Instructions
-Perform arithmetic operations like addition, subtraction, multiplication, and division.
+# MIPS Arithmetic Instructions
 
-| Instruction | Example          | Type | Binary Representation (Highlighted) |
-|-------------|------------------|------|--------------------------------------|
-| add         | `add $t0, $t1, $t2` | R    | `000000 01001 01010 01000 00000 100000` |
-| sub         | `sub $t0, $t1, $t2` | R    | `000000 01001 01010 01000 00000 100010` |
-| addi        | `addi $t0, $t1, 100` | I    | `001000 01001 01000 0000000001100100` |
+## Overview
+Arithmetic instructions perform basic mathematical operations like addition, subtraction, multiplication, and division. These instructions can operate on both signed and unsigned integers, with some variants handling overflow conditions.
 
-**Example Execution:**  
-`add $t0, $t1, $t2`  
-- If `$t1=5` and `$t2=3`, `$t0` becomes `8`.
+---
+
+## Instruction Table
+
+| Instruction          | Example               | Type | Binary Representation (Highlighted)                     | Description                                                                 |
+|----------------------|-----------------------|------|---------------------------------------------------------|-----------------------------------------------------------------------------|
+| **add**             | `add $t0, $t1, $t2`   | R    | `000000 01001 01010 01000 00000 100000`                 | Adds two registers. On overflow, triggers an exception.                     |
+| **sub**             | `sub $t0, $t1, $t2`   | R    | `000000 01001 01010 01000 00000 100010`                 | Subtracts two registers. On overflow, triggers an exception.                |
+| **addi**            | `addi $t0, $t1, 100`  | I    | `001000 01001 01000 0000000001100100`                   | Adds a register and a 16-bit immediate value. On overflow, triggers an exception. |
+| **addu**            | `addu $t0, $t1, $t2`  | R    | `000000 01001 01010 01000 00000 100001`                 | Adds two registers as unsigned integers. No overflow exception.             |
+| **subu**            | `subu $t0, $t1, $t2`  | R    | `000000 01001 01010 01000 00000 100011`                 | Subtracts two registers as unsigned integers. No overflow exception.        |
+| **addiu**           | `addiu $t0, $t1, 100` | I    | `001001 01001 01000 0000000001100100`                   | Adds a register and a 16-bit immediate value as unsigned. No overflow exception. |
+| **mul**             | `mul $t0, $t1, $t2`   | R    | `011100 01001 01010 01000 00000 000010`                 | Multiplies two registers (32-bit result). No overflow handling.             |
+| **mult**            | `mult $t1, $t2`       | R    | `000000 01001 01010 00000 00000 011000`                 | Multiplies two registers (64-bit result stored in `hi` and `lo`).           |
+| **div**             | `div $t1, $t2`        | R    | `000000 01001 01010 00000 00000 011010`                 | Divides two registers (quotient in `lo`, remainder in `hi`).                |
+
+---
+
+## Examples
+
+### 1. **add**  
+**Example:** `add $t0, $t1, $t2`  
+- **Action:** Adds the values in `$t1` and `$t2`, stores the result in `$t0`.  
+- **Binary:** `000000 01001 01010 01000 00000 100000`  
+  - `op=000000` (R-type), `rs=01001 ($t1)`, `rt=01010 ($t2)`, `rd=01000 ($t0)`, `funct=100000 (add)`.  
+- **Execution:**  
+  - If `$t1 = 5` and `$t2 = 3`, then `$t0 = 8`.  
+
+---
+
+### 2. **sub**  
+**Example:** `sub $t0, $t1, $t2`  
+- **Action:** Subtracts `$t2` from `$t1`, stores the result in `$t0`.  
+- **Binary:** `000000 01001 01010 01000 00000 100010`  
+  - `funct=100010 (sub)`.  
+- **Execution:**  
+  - If `$t1 = 5` and `$t2 = 3`, then `$t0 = 2`.  
+
+---
+
+### 3. **addi**  
+**Example:** `addi $t0, $t1, 100`  
+- **Action:** Adds `100` to `$t1`, stores the result in `$t0`.  
+- **Binary:** `001000 01001 01000 0000000001100100`  
+  - `op=001000 (addi)`, `imm=0000000001100100 (100)`.  
+- **Execution:**  
+  - If `$t1 = 200`, then `$t0 = 300`.  
+
+---
+
+### 4. **addu**  
+**Example:** `addu $t0, $t1, $t2`  
+- **Action:** Adds `$t1` and `$t2` as unsigned integers (no overflow exception).  
+- **Binary:** `000000 01001 01010 01000 00000 100001`  
+  - `funct=100001 (addu)`.  
+- **Execution:**  
+  - If `$t1 = 0xFFFFFFFF` and `$t2 = 1`, then `$t0 = 0x00000000` (wraps around).  
+
+---
+
+### 5. **subu**  
+**Example:** `subu $t0, $t1, $t2`  
+- **Action:** Subtracts `$t2` from `$t1` as unsigned integers.  
+- **Binary:** `000000 01001 01010 01000 00000 100011`  
+  - `funct=100011 (subu)`.  
+- **Execution:**  
+  - If `$t1 = 0` and `$t2 = 1`, then `$t0 = 0xFFFFFFFF`.  
+
+---
+
+### 6. **addiu**  
+**Example:** `addiu $t0, $t1, 100`  
+- **Action:** Adds `100` to `$t1` as an unsigned operation (no overflow).  
+- **Binary:** `001001 01001 01000 0000000001100100`  
+  - `op=001001 (addiu)`.  
+- **Execution:**  
+  - If `$t1 = 0xFFFFFF00`, then `$t0 = 0x00000064` (only lower 32 bits matter).  
+
+---
+
+### 7. **mul**  
+**Example:** `mul $t0, $t1, $t2`  
+- **Action:** Multiplies `$t1` and `$t2`, stores the lower 32 bits in `$t0`.  
+- **Binary:** `011100 01001 01010 01000 00000 000010`  
+  - Special `op=011100`, `funct=000010 (mul)`.  
+- **Execution:**  
+  - If `$t1 = 65536` and `$t2 = 65536`, then `$t0 = 0` (overflow ignored).  
+
+---
+
+### 8. **mult**  
+**Example:** `mult $t1, $t2`  
+- **Action:** Multiplies `$t1` and `$t2`, stores the 64-bit result in `hi` (high 32 bits) and `lo` (low 32 bits).  
+- **Binary:** `000000 01001 01010 00000 00000 011000`  
+  - `funct=011000 (mult)`.  
+- **Execution:**  
+  - If `$t1 = 65536` and `$t2 = 65536`, then `hi=0x00000001`, `lo=0x00000000`.  
+
+---
+
+### 9. **div**  
+**Example:** `div $t1, $t2`  
+- **Action:** Divides `$t1` by `$t2`, stores the quotient in `lo` and remainder in `hi`.  
+- **Binary:** `000000 01001 01010 00000 00000 011010`  
+  - `funct=011010 (div)`.  
+- **Execution:**  
+  - If `$t1 = 10` and `$t2 = 3`, then `lo=3`, `hi=1`.  
 
 ---
 
