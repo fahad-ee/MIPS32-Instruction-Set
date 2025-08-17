@@ -262,18 +262,98 @@ Logical instructions perform bitwise operations like AND, OR, shifts, and immedi
 
 ---
 
-### 3. Data Transfer Instructions
-Move data between registers and memory.
+# MIPS Data Transfer Instructions
 
-| Instruction | Example          | Type | Binary Representation (Highlighted) |
-|-------------|------------------|------|--------------------------------------|
-| lw          | `lw $t0, 100($t1)` | I    | `100011 01001 01000 0000000001100100` |
-| sw          | `sw $t0, 100($t1)` | I    | `101011 01001 01000 0000000001100100` |
-| lui         | `lui $t0, 100`   | I    | `001111 00000 01000 0000000001100100` |
+## Overview
+Data transfer instructions move data between registers and memory, or manipulate addresses. These include load/store operations and pseudo-instructions for address management.
 
-**Example Execution:**  
-`lw $t0, 100($t1)`  
-- Loads the word at memory address `$t1 + 100` into `$t0`.
+
+## Instruction Table
+
+| Instruction          | Example               | Type | Binary Representation (Highlighted)                     | Description                                                                 |
+|----------------------|-----------------------|------|---------------------------------------------------------|-----------------------------------------------------------------------------|
+| **lw**              | `lw $t0, 100($t1)`    | I    | `100011 01001 01000 0000000001100100`                   | Loads a word from memory at address `$t1 + 100` into `$t0`.                |
+| **sw**              | `sw $t0, 100($t1)`    | I    | `101011 01001 01000 0000000001100100`                   | Stores a word from `$t0` to memory at address `$t1 + 100`.                 |
+| **lui**             | `lui $t0, 0xABCD`     | I    | `001111 00000 01000 1010101111001101`                   | Loads the 16-bit immediate into the upper 16 bits of `$t0` (lower bits set to 0). |
+| **la**              | `la $t0, label`       | P    | *Assembler expands to `lui` + `ori`*                    | Pseudo-instruction: Loads the address of `label` into `$t0`.                |
+| **li**              | `li $t0, 100`         | P    | *Assembler expands to `addi` or `lui` + `ori`*          | Pseudo-instruction: Loads a 32-bit immediate into `$t0`.                   |
+| **mfhi**            | `mfhi $t0`            | R    | `000000 00000 00000 01000 00000 010000`                 | Moves the value from `hi` register to `$t0`.                               |
+| **mflo**            | `mflo $t0`            | R    | `000000 00000 00000 01000 00000 010010`                 | Moves the value from `lo` register to `$t0`.                               |
+
+# MIPS Data Transfer Instructions
+
+## 1. lw (Load Word)
+**Example:** `lw $t0, 100($t1)`  
+- **Type:** I-type  
+- **Binary:** `100011 01001 01000 0000000001100100`  
+- **Fields:**  
+  - `op=100011` (lw)  
+  - `rs=01001` ($t1)  
+  - `rt=01000` ($t0)  
+  - `offset=0000000001100100` (100)  
+- **Action:** Loads word from memory[$t1 + 100] → $t0  
+- **Execution:**  
+  If $t1=0x1000 and memory[0x1064]=0x12345678 → $t0=0x12345678  
+
+## 2. sw (Store Word)
+**Example:** `sw $t0, 100($t1)`  
+- **Type:** I-type  
+- **Binary:** `101011 01001 01000 0000000001100100`  
+- **Fields:** Same as lw  
+- **Action:** Stores word from $t0 → memory[$t1 + 100]  
+- **Execution:**  
+  If $t0=0xABCD1234 and $t1=0x2000 → memory[0x2064]=0xABCD1234  
+
+## 3. lui (Load Upper Immediate)
+**Example:** `lui $t0, 0xABCD`  
+- **Type:** I-type  
+- **Binary:** `001111 00000 01000 1010101111001101`  
+- **Fields:**  
+  - `op=001111` (lui)  
+  - `rs=00000` (unused)  
+  - `rt=01000` ($t0)  
+  - `imm=1010101111001101` (0xABCD)  
+- **Action:** $t0 = imm << 16  
+- **Execution:**  
+  $t0 = 0xABCD0000  
+
+## 4. la (Load Address)
+**Example:** `la $t0, label`  
+- **Type:** Pseudo (expands to lui+ori)  
+- **Binary:** N/A (assembler generates actual instructions)  
+- **Action:** Loads address of label → $t0  
+- **Execution:**  
+  If label is at 0x10004000 → $t0=0x10004000  
+
+## 5. li (Load Immediate)
+**Example:** `li $t0, 0x12345678`  
+- **Type:** Pseudo (expands to lui+ori)  
+- **Binary:** N/A (assembler generates actual instructions)  
+- **Action:** Loads 32-bit immediate → $t0  
+- **Execution:**  
+  $t0 = 0x12345678  
+
+## 6. mfhi (Move From HI)
+**Example:** `mfhi $t0`  
+- **Type:** R-type  
+- **Binary:** `000000 00000 00000 01000 00000 010000`  
+- **Fields:**  
+  - `op=000000`  
+  - `funct=010000` (mfhi)  
+  - `rd=01000` ($t0)  
+- **Action:** $t0 = hi  
+- **Execution:**  
+  If hi=0x00000001 → $t0=0x00000001  
+
+## 7. mflo (Move From LO)
+**Example:** `mflo $t0`  
+- **Type:** R-type  
+- **Binary:** `000000 00000 00000 01000 00000 010010`  
+- **Fields:**  
+  - `funct=010010` (mflo)  
+- **Action:** $t0 = lo  
+- **Execution:**  
+  If lo=0xFFFFFFFF → $t0=0xFFFFFFFF  
 
 ---
 
