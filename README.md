@@ -187,18 +187,78 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
 
 ---
 
-### 2. Logical Instructions
-Perform bitwise operations like AND, OR, and shifts.
+# MIPS Logical Instructions
 
-| Instruction | Example          | Type | Binary Representation (Highlighted) |
-|-------------|------------------|------|--------------------------------------|
-| and         | `and $t0, $t1, $t2` | R    | `000000 01001 01010 01000 00000 100100` |
-| or          | `or $t0, $t1, $t2` | R    | `000000 01001 01010 01000 00000 100101` |
-| sll         | `sll $t0, $t1, 2` | R    | `000000 00000 01001 01000 00010 000000` |
+## Overview
+Logical instructions perform bitwise operations like AND, OR, shifts, and immediate variants. These are essential for manipulating data at the binary level.
 
-**Example Execution:**  
-`and $t0, $t1, $t2`  
-- If `$t1=0b1010` and `$t2=0b1100`, `$t0` becomes `0b1000`.
+
+## Instruction Table
+
+| Instruction          | Example               | Type | Binary Representation (Highlighted)                     | Description                                                                 |
+|----------------------|-----------------------|------|---------------------------------------------------------|-----------------------------------------------------------------------------|
+| **and**             | `and $t0, $t1, $t2`   | R    | `000000 01001 01010 01000 00000 100100`                 | Bitwise AND of two registers.                                              |
+| **or**              | `or $t0, $t1, $t2`    | R    | `000000 01001 01010 01000 00000 100101`                 | Bitwise OR of two registers.                                               |
+| **andi**            | `andi $t0, $t1, 100`  | I    | `001100 01001 01000 0000000001100100`                   | Bitwise AND with a 16-bit immediate value.                                 |
+| **ori**             | `ori $t0, $t1, 100`   | I    | `001101 01001 01000 0000000001100100`                   | Bitwise OR with a 16-bit immediate value.                                  |
+| **sll**             | `sll $t0, $t1, 2`     | R    | `000000 00000 01001 01000 00010 000000`                 | Logical left shift by a constant (shamt).                                  |
+| **srl**             | `srl $t0, $t1, 2`     | R    | `000000 00000 01001 01000 00010 000010`                 | Logical right shift by a constant (shamt).                                 |
+
+
+## Examples
+
+### 1. **and**  
+**Example:** `and $t0, $t1, $t2`  
+- **Action:** Performs bitwise AND between `$t1` and `$t2`, stores result in `$t0`.  
+- **Binary:** `000000 01001 01010 01000 00000 100100`  
+  - `op=000000` (R-type), `rs=01001 ($t1)`, `rt=01010 ($t2)`, `rd=01000 ($t0)`, `funct=100100 (and)`.  
+- **Execution:**  
+  - If `$t1 = 0b1100` and `$t2 = 0b1010`, then `$t0 = 0b1000`.  
+
+
+### 2. **or**  
+**Example:** `or $t0, $t1, $t2`  
+- **Action:** Performs bitwise OR between `$t1` and `$t2`, stores result in `$t0`.  
+- **Binary:** `000000 01001 01010 01000 00000 100101`  
+  - `funct=100101 (or)`.  
+- **Execution:**  
+  - If `$t1 = 0b1100` and `$t2 = 0b1010`, then `$t0 = 0b1110`.  
+
+
+### 3. **andi**  
+**Example:** `andi $t0, $t1, 0xFF`  
+- **Action:** Bitwise AND between `$t1` and immediate `0xFF` (masks lower 8 bits).  
+- **Binary:** `001100 01001 01000 0000000011111111`  
+  - `op=001100 (andi)`, `imm=0000000011111111 (255)`.  
+- **Execution:**  
+  - If `$t1 = 0x1234ABCD`, then `$t0 = 0x000000CD`.  
+
+
+### 4. **ori**  
+**Example:** `ori $t0, $t1, 0xFF00`  
+- **Action:** Bitwise OR between `$t1` and immediate `0xFF00`.  
+- **Binary:** `001101 01001 01000 1111111100000000`  
+  - `op=001101 (ori)`, `imm=1111111100000000 (0xFF00)`.  
+- **Execution:**  
+  - If `$t1 = 0x00001234`, then `$t0 = 0x0000FF34`.  
+
+
+### 5. **sll**  
+**Example:** `sll $t0, $t1, 2`  
+- **Action:** Shifts `$t1` left by 2 bits, stores in `$t0`.  
+- **Binary:** `000000 00000 01001 01000 00010 000000`  
+  - `rs=00000` (unused), `shamt=00010 (2)`, `funct=000000 (sll)`.  
+- **Execution:**  
+  - If `$t1 = 0b0001`, then `$t0 = 0b0100`.  
+
+
+### 6. **srl**  
+**Example:** `srl $t0, $t1, 2`  
+- **Action:** Shifts `$t1` right by 2 bits (zero-fill), stores in `$t0`.  
+- **Binary:** `000000 00000 01001 01000 00010 000010`  
+  - `funct=000010 (srl)`.  
+- **Execution:**  
+  - If `$t1 = 0b1000`, then `$t0 = 0b0010`.  
 
 ---
 
