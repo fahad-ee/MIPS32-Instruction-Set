@@ -114,7 +114,7 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
   - If `$t1 = 5` and `$t2 = 3`, then `$t0 = 8`.  
 
 
-### 2. **sub**  
+## 2. **sub**  
 **Example:** `sub $t0, $t1, $t2`  
 - **Action:** Subtracts `$t2` from `$t1`, stores the result in `$t0`.  
 - **Binary:** `000000 01001 01010 01000 00000 100010`  
@@ -123,7 +123,7 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
   - If `$t1 = 5` and `$t2 = 3`, then `$t0 = 2`.  
 
 
-### 3. **addi**  
+## 3. **addi**  
 **Example:** `addi $t0, $t1, 100`  
 - **Action:** Adds `100` to `$t1`, stores the result in `$t0`.  
 - **Binary:** `001000 01001 01000 0000000001100100`  
@@ -132,7 +132,7 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
   - If `$t1 = 200`, then `$t0 = 300`.  
 
 
-### 4. **addu**  
+## 4. **addu**  
 **Example:** `addu $t0, $t1, $t2`  
 - **Action:** Adds `$t1` and `$t2` as unsigned integers (no overflow exception).  
 - **Binary:** `000000 01001 01010 01000 00000 100001`  
@@ -141,7 +141,7 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
   - If `$t1 = 0xFFFFFFFF` and `$t2 = 1`, then `$t0 = 0x00000000` (wraps around).  
 
 
-### 5. **subu**  
+## 5. **subu**  
 **Example:** `subu $t0, $t1, $t2`  
 - **Action:** Subtracts `$t2` from `$t1` as unsigned integers.  
 - **Binary:** `000000 01001 01010 01000 00000 100011`  
@@ -150,7 +150,7 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
   - If `$t1 = 0` and `$t2 = 1`, then `$t0 = 0xFFFFFFFF`.  
 
 
-### 6. **addiu**  
+## 6. **addiu**  
 **Example:** `addiu $t0, $t1, 100`  
 - **Action:** Adds `100` to `$t1` as an unsigned operation (no overflow).  
 - **Binary:** `001001 01001 01000 0000000001100100`  
@@ -159,7 +159,7 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
   - If `$t1 = 0xFFFFFF00`, then `$t0 = 0x00000064` (only lower 32 bits matter).  
 
 
-### 7. **mul**  
+## 7. **mul**  
 **Example:** `mul $t0, $t1, $t2`  
 - **Action:** Multiplies `$t1` and `$t2`, stores the lower 32 bits in `$t0`.  
 - **Binary:** `011100 01001 01010 01000 00000 000010`  
@@ -168,7 +168,7 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
   - If `$t1 = 65536` and `$t2 = 65536`, then `$t0 = 0` (overflow ignored).  
 
 
-### 8. **mult**  
+## 8. **mult**  
 **Example:** `mult $t1, $t2`  
 - **Action:** Multiplies `$t1` and `$t2`, stores the 64-bit result in `hi` (high 32 bits) and `lo` (low 32 bits).  
 - **Binary:** `000000 01001 01010 00000 00000 011000`  
@@ -177,7 +177,7 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
   - If `$t1 = 65536` and `$t2 = 65536`, then `hi=0x00000001`, `lo=0x00000000`.  
 
 
-### 9. **div**  
+## 9. **div**  
 **Example:** `div $t1, $t2`  
 - **Action:** Divides `$t1` by `$t2`, stores the quotient in `lo` and remainder in `hi`.  
 - **Binary:** `000000 01001 01010 00000 00000 011010`  
@@ -207,7 +207,7 @@ Logical instructions perform bitwise operations like AND, OR, shifts, and immedi
 
 ## Examples
 
-### 1. **and**  
+## 1. **and**  
 **Example:** `and $t0, $t1, $t2`  
 - **Action:** Performs bitwise AND between `$t1` and `$t2`, stores result in `$t0`.  
 - **Binary:** `000000 01001 01010 01000 00000 100100`  
@@ -216,7 +216,7 @@ Logical instructions perform bitwise operations like AND, OR, shifts, and immedi
   - If `$t1 = 0b1100` and `$t2 = 0b1010`, then `$t0 = 0b1000`.  
 
 
-### 2. **or**  
+## 2. **or**  
 **Example:** `or $t0, $t1, $t2`  
 - **Action:** Performs bitwise OR between `$t1` and `$t2`, stores result in `$t0`.  
 - **Binary:** `000000 01001 01010 01000 00000 100101`  
@@ -225,7 +225,7 @@ Logical instructions perform bitwise operations like AND, OR, shifts, and immedi
   - If `$t1 = 0b1100` and `$t2 = 0b1010`, then `$t0 = 0b1110`.  
 
 
-### 3. **andi**  
+## 3. **andi**  
 **Example:** `andi $t0, $t1, 0xFF`  
 - **Action:** Bitwise AND between `$t1` and immediate `0xFF` (masks lower 8 bits).  
 - **Binary:** `001100 01001 01000 0000000011111111`  
@@ -234,7 +234,7 @@ Logical instructions perform bitwise operations like AND, OR, shifts, and immedi
   - If `$t1 = 0x1234ABCD`, then `$t0 = 0x000000CD`.  
 
 
-### 4. **ori**  
+## 4. **ori**  
 **Example:** `ori $t0, $t1, 0xFF00`  
 - **Action:** Bitwise OR between `$t1` and immediate `0xFF00`.  
 - **Binary:** `001101 01001 01000 1111111100000000`  
@@ -243,7 +243,7 @@ Logical instructions perform bitwise operations like AND, OR, shifts, and immedi
   - If `$t1 = 0x00001234`, then `$t0 = 0x0000FF34`.  
 
 
-### 5. **sll**  
+## 5. **sll**  
 **Example:** `sll $t0, $t1, 2`  
 - **Action:** Shifts `$t1` left by 2 bits, stores in `$t0`.  
 - **Binary:** `000000 00000 01001 01000 00010 000000`  
@@ -252,7 +252,7 @@ Logical instructions perform bitwise operations like AND, OR, shifts, and immedi
   - If `$t1 = 0b0001`, then `$t0 = 0b0100`.  
 
 
-### 6. **srl**  
+## 6. **srl**  
 **Example:** `srl $t0, $t1, 2`  
 - **Action:** Shifts `$t1` right by 2 bits (zero-fill), stores in `$t0`.  
 - **Binary:** `000000 00000 01001 01000 00010 000010`  
