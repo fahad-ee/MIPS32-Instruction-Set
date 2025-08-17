@@ -102,7 +102,6 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
 | **mult**            | `mult $t1, $t2`       | R    | `000000 01001 01010 00000 00000 011000`                 | Multiplies two registers (64-bit result stored in `hi` and `lo`).           |
 | **div**             | `div $t1, $t2`        | R    | `000000 01001 01010 00000 00000 011010`                 | Divides two registers (quotient in `lo`, remainder in `hi`).                |
 
----
 
 ## Examples
 
@@ -114,7 +113,6 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
 - **Execution:**  
   - If `$t1 = 5` and `$t2 = 3`, then `$t0 = 8`.  
 
----
 
 ### 2. **sub**  
 **Example:** `sub $t0, $t1, $t2`  
@@ -124,7 +122,6 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
 - **Execution:**  
   - If `$t1 = 5` and `$t2 = 3`, then `$t0 = 2`.  
 
----
 
 ### 3. **addi**  
 **Example:** `addi $t0, $t1, 100`  
@@ -134,7 +131,6 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
 - **Execution:**  
   - If `$t1 = 200`, then `$t0 = 300`.  
 
----
 
 ### 4. **addu**  
 **Example:** `addu $t0, $t1, $t2`  
@@ -144,7 +140,6 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
 - **Execution:**  
   - If `$t1 = 0xFFFFFFFF` and `$t2 = 1`, then `$t0 = 0x00000000` (wraps around).  
 
----
 
 ### 5. **subu**  
 **Example:** `subu $t0, $t1, $t2`  
@@ -154,7 +149,6 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
 - **Execution:**  
   - If `$t1 = 0` and `$t2 = 1`, then `$t0 = 0xFFFFFFFF`.  
 
----
 
 ### 6. **addiu**  
 **Example:** `addiu $t0, $t1, 100`  
@@ -164,7 +158,6 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
 - **Execution:**  
   - If `$t1 = 0xFFFFFF00`, then `$t0 = 0x00000064` (only lower 32 bits matter).  
 
----
 
 ### 7. **mul**  
 **Example:** `mul $t0, $t1, $t2`  
@@ -174,7 +167,6 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
 - **Execution:**  
   - If `$t1 = 65536` and `$t2 = 65536`, then `$t0 = 0` (overflow ignored).  
 
----
 
 ### 8. **mult**  
 **Example:** `mult $t1, $t2`  
@@ -184,7 +176,6 @@ Arithmetic instructions perform basic mathematical operations like addition, sub
 - **Execution:**  
   - If `$t1 = 65536` and `$t2 = 65536`, then `hi=0x00000001`, `lo=0x00000000`.  
 
----
 
 ### 9. **div**  
 **Example:** `div $t1, $t2`  
